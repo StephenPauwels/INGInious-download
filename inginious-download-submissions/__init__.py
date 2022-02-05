@@ -102,7 +102,7 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                             info.size = subfile.getbuffer().nbytes
                             tar.addfile(info, fileobj=subfile)
                         elif isinstance(task_input, dict):
-                            self._logger.info(sub_dir + " - " + task_input)
+                            self._logger.info(sub_dir + " - " + str(task_input))
                         elif task_input is not None:
                             task_io = io.BytesIO(task_input.encode('utf-8'))
 
