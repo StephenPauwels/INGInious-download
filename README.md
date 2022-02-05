@@ -4,11 +4,11 @@ Adds a problem-type that requires no extra input from students, but uses solutio
 
 ## Installing
 
-    pip3 install git+https://github.com/StephenPauwels/INGInious_extra_test.git
+    pip3 install git+https://github.com/StephenPauwels/INGInious-download.git
 
 ## Activating
 
 In your ``configuration.yaml`` file, add the following plugin entry:
 
     plugins:
-        - plugin_module: "inginious-extra-test"
+        - plugin_module: "inginious-download-submissions"
