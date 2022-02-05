@@ -96,11 +96,14 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
 
 
                         if isinstance(task_input, dict) and "filename" in task_input:
-                            subfile = io.BytesIO(task_input['value'])
+                            if task_input["filename"].endswith(".zip"):
+                                pass
+                            else:
+                                subfile = io.BytesIO(task_input['value'])
 
-                            info = tarfile.TarInfo(name=task_file)
-                            info.size = subfile.getbuffer().nbytes
-                            tar.addfile(info, fileobj=subfile)
+                                info = tarfile.TarInfo(name=task_file)
+                                info.size = subfile.getbuffer().nbytes
+                                tar.addfile(info, fileobj=subfile)
                         elif isinstance(task_input, dict):
                             pass
                         elif task_input is not None:
