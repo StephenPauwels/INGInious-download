@@ -5,6 +5,7 @@ import logging
 import pymongo
 import tempfile
 import tarfile
+import zipfile
 
 from flask import send_from_directory, request, Response
 
@@ -95,7 +96,22 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
 
                         if isinstance(task_input, dict) and "filename" in task_input:
                             if task_input["filename"].endswith(".zip"):
-                                pass
+                                subfile = io.BytesIO(task_input["value"])
+
+                                z_file = zipfile.ZipFile(subfile, "r")
+                                for info in z_file.infolist():
+                                    if not info.filename.startswith("_") and (info.filename.endswith(".cpp") or
+                                                                              info.filename.endswith(".h") or
+                                                                              info.filename.endswith(".py")):
+                                        print(info)
+                                        b_file = io.BytesIO(z_file.open(info.filename).read())
+
+                                        task_file = sub_dir + "/" + pid + "/"
+                                        info = tarfile.TarInfo(name=task_file + info.filename)
+                                        info.size = b_file.getbuffer().nbytes
+                                        tar.addfile(info, fileobj=b_file)
+
+                                z_file.close()
                             else:
                                 subfile = io.BytesIO(task_input['value'])
 
@@ -105,9 +121,6 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                         elif isinstance(task_input, dict):
                             pass
                         elif task_input is not None:
-                            print(task_file)
-                            print(pid)
-                            print(task_input)
                             task_io = io.BytesIO(task_input.encode('utf-8'))
 
                             # Add file in tar archive

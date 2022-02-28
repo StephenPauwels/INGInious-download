@@ -164,6 +164,25 @@
                 </div>
             </div>
 
+            <!-- Filter file types from .zip archives -->
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <div class="card section">
+                        <div class="card-header">
+                            <span class="title">{{ _("File Type Filter [NOT IMPLEMENTED YET]") }}</span>
+                        </div>
+                        <div class="content card-body">
+                            <div class="form-group row">
+                                <label for="extensions-PID" class="col-sm-2 control-label">{{ _("Allowed file extensions (including the dot, separated by spaces)") }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="extensions-filter" name="extensions-filter" placeholder=".txt,.zip,.gz"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Validate -->
             <div class="btn-group pull-right mb-2">
