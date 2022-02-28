@@ -7,7 +7,7 @@ $def with(course,tasks,users,audiences,tutored_audiences,tutored_users,old_param
 {% block title %} Download Evaluation Submissions{% endblock %}
 
 {% block column %}
-    {{ template_helper.call('course_admin_menu',course=course,current='reporting') | safe }}
+    {{ template_helper.call('course_admin_menu',course=course,current='download') | safe }}
 {% endblock %}
 
 {% block navbar %}
@@ -16,7 +16,7 @@ $def with(course,tasks,users,audiences,tutored_audiences,tutored_users,old_param
             <li class="breadcrumb-item"><a href="{{get_homepath()}}/course/{{course.get_id()}}">{{course.get_name(user_manager.session_language())}}</a></li>
             <li class="breadcrumb-item"><a href="{{get_homepath()}}/admin/{{course.get_id()}}" title="Administration" data-toggle="tooltip" data-placement="bottom">
                 <i class="fa fa-user-secret"></i></a></li>
-            <li class="breadcrumb-item active"><a href="#"><i class="fa fa-bar-chart"></i> Reporting <span class="sr-only">(current)</span></a></li>
+            <li class="breadcrumb-item active"><a href="#"><i class="fa fa-download"></i> Download <span class="sr-only">(current)</span></a></li>
         </ol>
     </nav>
 {% endblock %}

@@ -56,9 +56,7 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
 
         files_added = []
 
-        # TODO: Change for deployment
-        # submissions = self.get_selected_submissions(course, only_tasks=x["tasks"], only_users=x["users"], keep_only_evaluation_submissions=True)
-        submissions = self.get_selected_submissions(course, keep_only_evaluation_submissions=True)
+        submissions = self.get_selected_submissions(course, only_tasks=x["tasks"], only_users=x["users"], keep_only_evaluation_submissions=True)
 
         # Initialize tmp directory
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -107,6 +105,9 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                         elif isinstance(task_input, dict):
                             pass
                         elif task_input is not None:
+                            print(task_file)
+                            print(pid)
+                            print(task_input)
                             task_io = io.BytesIO(task_input.encode('utf-8'))
 
                             # Add file in tar archive
