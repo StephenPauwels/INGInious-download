@@ -6,8 +6,9 @@ import pymongo
 import tempfile
 import tarfile
 import zipfile
+import mosspy
 
-from flask import send_from_directory, request, Response
+from flask import send_from_directory, request, Response, redirect
 
 from inginious.common.tasks_problems import Problem
 from inginious.frontend.pages.course_admin.utils import INGIniousSubmissionsAdminPage
@@ -103,7 +104,6 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                                     if not info.filename.startswith("_") and (info.filename.endswith(".cpp") or
                                                                               info.filename.endswith(".h") or
                                                                               info.filename.endswith(".py")):
-                                        print(info)
                                         b_file = io.BytesIO(z_file.open(info.filename).read())
 
                                         task_file = sub_dir + "/" + pid + "/"
@@ -134,8 +134,31 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                 #         # Process uploaded file
                 #         print("INPUT FILE FOUND")
 
+
+
             tar.close()
             archive.seek(0)
+
+            if 'run_plagiarism' in x:
+                # TODO: Make id as config and language selection as parameter
+                moss = mosspy.Moss(703078888, "python")
+                moss.setDirectoryMode(1)
+
+                tar = tarfile.open(fileobj=archive, mode='r:gz')
+
+                tar_members = tar.getmembers()
+                with tempfile.TemporaryDirectory() as tmp_dir:
+                    tar.extractall(tmp_dir)
+
+                    for tar_member in tar_members:
+                        if tar_member.size > 0:
+                            moss.addFile(tmp_dir + "/" + tar_member.name)
+
+                    url = moss.send(lambda file_path, display_name: print('*', end='', flush=True))
+                    return redirect(url)
+
+                tar.close()
+                archive.seek(0)
 
             response = Response(response=archive, content_type='application/x-gzip')
             response.headers['Content-Disposition'] = 'attachment; filename="submissions.tgz"'
