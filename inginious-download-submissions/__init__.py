@@ -72,15 +72,22 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
             archive = tempfile.TemporaryFile()
             tar = tarfile.open(fileobj=archive, mode='w:gz')
 
+            scores = {}
+
             for sub in submissions:
                 user_inputs = self.submission_manager.get_input_from_submission(sub)["input"]
                 # Get userid and taskid
                 user_id = sub["username"][0]
                 task_id = sub["taskid"]
+                user_score = sub["grade"] / 10
 
                 # Get expected tasks
                 task = course.get_task(task_id)
                 sub_dir = task_id + "/" + user_id
+
+                if task_id not in scores:
+                    scores[task_id] = []
+                scores[task_id].append(str(user_id + "\t" + str(user_score)))
 
                 extension = ""
                 if "python" in task.get_environment_id():
@@ -134,7 +141,14 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
                 #         # Process uploaded file
                 #         print("INPUT FILE FOUND")
 
+            # Save results in tar file
+            for task_id in scores:
+                score = "\n".join(scores[task_id])
 
+                results = io.BytesIO(score.encode('utf-8'))
+
+                info = tarfile.TarInfo(name=task_id + "/" + task_id + "/")
+                tar.addfile(info, fileobj=results)
 
             tar.close()
             archive.seek(0)
