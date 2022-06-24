@@ -147,7 +147,8 @@ class DownloadPage(INGIniousSubmissionsAdminPage):
 
                 results = io.BytesIO(score.encode('utf-8'))
 
-                info = tarfile.TarInfo(name=task_id + "/" + task_id + "/")
+                info = tarfile.TarInfo(name=task_id + "/results.txt")
+                info.size = results.getbuffer().nbytes
                 tar.addfile(info, fileobj=results)
 
             tar.close()
