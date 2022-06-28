@@ -22,7 +22,7 @@ PATH_TO_TEMPLATES = os.path.join(PATH_TO_PLUGIN, "templates")
 
 def add_admin_menu(course):  # pylint: disable=unused-argument
     """ Add a menu for jplag analyze in the administration """
-    return 'download', '<i class="fa fa-download"></i>&nbsp; Download Submissions [EXPERIMENTAL]'
+    return 'download', '<i class="fa fa-download"></i>&nbsp; Download Submissions'
 
 
 
